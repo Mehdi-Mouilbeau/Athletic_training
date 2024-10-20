@@ -10,7 +10,14 @@ class TrainingSession extends HiveObject {
   @HiveField(1)
   List<Exercise> exercises;
 
-  TrainingSession({required this.name, required this.exercises});
+  @HiveField(2) // Add this line for the id
+  String id; // New id field
+
+  TrainingSession({
+    required this.name,
+    required this.exercises,
+    required this.id, 
+  });
 }
 
 @HiveType(typeId: 1)
@@ -24,8 +31,9 @@ class Exercise extends HiveObject {
   @HiveField(2)
   int recovery;
 
-  Exercise(
-      {required this.description,
-      required this.duration,
-      required this.recovery});
+  Exercise({
+    required this.description,
+    required this.duration,
+    required this.recovery,
+  });
 }

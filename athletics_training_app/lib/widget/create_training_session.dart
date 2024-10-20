@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../services/training_service.dart';
 import '../models/training_session.dart';
 
@@ -11,6 +12,7 @@ class CreateTrainingSession extends StatefulWidget {
 
 class _CreateTrainingSessionState extends State<CreateTrainingSession> {
   final TrainingService _trainingService = TrainingService();
+  final Uuid _uuid = Uuid();
 
   String _selectedDuration = "30"; // Durée par défaut
   String _selectedType = "Footing"; // Type par défaut
@@ -65,9 +67,11 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
       return;
     }
 
+    final sessionId = _uuid.v4();
+
     final session = TrainingSession(
       name: _sessionNameController.text,
-      exercises: _exercises,
+      exercises: _exercises, id: sessionId,
     );
 
     await _trainingService.addTrainingSession(session);
