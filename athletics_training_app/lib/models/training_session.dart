@@ -10,8 +10,8 @@ class TrainingSession extends HiveObject {
   @HiveField(1)
   List<Exercise> exercises;
 
-  @HiveField(2) // Add this line for the id
-  String id; // New id field
+  @HiveField(2)
+  String id;
 
   TrainingSession({
     required this.name,

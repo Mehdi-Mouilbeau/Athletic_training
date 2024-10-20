@@ -14,8 +14,8 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
   final TrainingService _trainingService = TrainingService();
   final Uuid _uuid = Uuid();
 
-  String _selectedDuration = "30"; // Durée par défaut
-  String _selectedType = "Footing"; // Type par défaut
+  String _selectedDuration = "30";
+  String _selectedType = "Footing";
 
   final List<Exercise> _exercises = [];
   final TextEditingController _sessionNameController = TextEditingController();

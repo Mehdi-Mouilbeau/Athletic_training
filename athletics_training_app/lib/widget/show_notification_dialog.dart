@@ -13,7 +13,6 @@ Future<void> showNotificationDialog(
       return AlertDialog(
         title: Text("Programmer Notification"),
         content: SingleChildScrollView(
-          // Add SingleChildScrollView for better scrolling behavior
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -21,7 +20,7 @@ Future<void> showNotificationDialog(
                 controller: timeController,
                 decoration: InputDecoration(labelText: 'Heure (HH:MM)'),
                 keyboardType:
-                    TextInputType.datetime, // Specify input type for better UX
+                    TextInputType.datetime, 
               ),
               TextField(
                 controller: durationController,
@@ -85,7 +84,7 @@ Future<void> showNotificationDialog(
                 }
               }
 
-              Navigator.of(context).pop(); // Close the dialog
+              Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Notification programmée")),
               );
