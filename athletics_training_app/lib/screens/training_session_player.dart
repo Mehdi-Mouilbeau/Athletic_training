@@ -62,7 +62,6 @@ class _TrainingSessionPlayerState extends State<TrainingSessionPlayer> {
   }
 
   void _endSession() {
-    // Logic to handle end of the training session
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

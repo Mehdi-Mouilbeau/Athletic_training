@@ -4,8 +4,8 @@ import 'package:athletics_training_app/widget/create_training_session.dart';
 import 'package:athletics_training_app/widget/show_notification_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../models/training_session.dart';
-import 'training_session_player.dart';
+import 'models/training_session.dart';
+import 'screens/training_session_player.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TrainingApp(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => TrainingApp(),
+        '/training': (context) => const TrainingApp(),
+        '/exercises': (context) => const CreateTrainingSession(),
+      },
     );
   }
 }
@@ -52,6 +57,44 @@ class _TrainingAppState extends State<TrainingApp> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Sessions d'entraînement")),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Center(
+                child: IconButton(
+                  icon: Image.asset(
+                    "assets/icons/playstore.png",
+                    width: 300,
+                    height: 300,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.directions_run),
+              title: Text("Entrainement"),
+              onTap: () {
+                Navigator.pushNamed(context, '/exercises');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.fitness_center),
+              title: Text("Exercices"),
+              onTap: () {
+                Navigator.pushNamed(context, '/training');
+              },
+            ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           ElevatedButton(
@@ -81,8 +124,7 @@ class _TrainingAppState extends State<TrainingApp> {
                         icon:
                             const Icon(Icons.notifications, color: Colors.blue),
                         onPressed: () {
-                          showNotificationDialog(
-                              context, session); 
+                          showNotificationDialog(context, session);
                         },
                       ),
                       IconButton(

@@ -41,8 +41,7 @@ class NotificationService {
           importance: Importance.max,
           priority: Priority.high,
         ),
-      ),
-      androidAllowWhileIdle: true,
+      ),androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
