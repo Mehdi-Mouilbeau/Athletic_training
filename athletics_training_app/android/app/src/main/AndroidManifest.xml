@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.athletics_training_app">
 
-    <!-- Permissions pour les notifications -->
+    <!-- Permissions for notifications -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
@@ -9,7 +9,8 @@
         android:label="athletics_training_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        
+
+        <!-- Main Activity Configuration -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -29,10 +30,18 @@
             </intent-filter>
         </activity>
 
-        <!-- Configuration des notifications -->
-        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.ActionBroadcastReceiver" android:exported="true"/>
-        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.DismissedBroadcastReceiver" android:exported="true"/>
-        <receiver android:name="com.dexterous.flutterlocalnotifications.receivers.ScheduledNotificationBootReceiver"
+        <!-- Notification Receivers Configuration -->
+        <receiver 
+            android:name="com.dexterous.flutterlocalnotifications.receivers.ActionBroadcastReceiver" 
+            android:exported="true"/>
+            
+        <receiver 
+            android:name="com.dexterous.flutterlocalnotifications.receivers.DismissedBroadcastReceiver" 
+            android:exported="true"/>
+            
+        <receiver 
+            android:name="com.dexterous.flutterlocalnotifications.receivers.ScheduledNotificationBootReceiver"
+            android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
@@ -40,12 +49,13 @@
             </intent-filter>
         </receiver>
 
+        <!-- Flutter Embedding Configuration -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
 
-
+    <!-- Intent Queries (for text processing, if needed) -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>

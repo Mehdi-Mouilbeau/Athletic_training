@@ -14,27 +14,11 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
   final TrainingService _trainingService = TrainingService();
   final Uuid _uuid = Uuid();
 
-  String _selectedDuration = "30";
   String _selectedType = "Footing";
-
   final List<Exercise> _exercises = [];
   final TextEditingController _sessionNameController = TextEditingController();
-
-  // Liste des options pour la durée
-  final List<String> _durations = [
-    "5",
-    "10",
-    "15",
-    "20",
-    "25",
-    "30",
-    "35",
-    "40",
-    "45",
-    "50",
-    "55",
-    "60"
-  ];
+  final TextEditingController _minutesController = TextEditingController();
+  final TextEditingController _secondsController = TextEditingController();
 
   // Liste des types de course
   final List<String> _types = [
@@ -45,20 +29,33 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
   ];
 
   void _addExercise() {
+    int minutes = int.tryParse(_minutesController.text) ?? 0;
+    int seconds = int.tryParse(_secondsController.text) ?? 0;
+    int totalDuration = (minutes * 60) + seconds;
+
+    if (totalDuration <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Veuillez entrer une durée valide.")),
+      );
+      return;
+    }
+
     final exercise = Exercise(
       description: _selectedType,
-      duration: int.parse(_selectedDuration),
-      recovery: 0, // Par défaut, vous pouvez ajouter un autre menu pour cela
+      duration: totalDuration,
+      recovery: 0, // Valeur par défaut
     );
 
     setState(() {
       _exercises.add(exercise);
     });
+
+    _minutesController.clear();
+    _secondsController.clear();
   }
 
   void _saveTrainingSession() async {
     if (_sessionNameController.text.isEmpty || _exercises.isEmpty) {
-      // Afficher un message d'erreur si le nom ou les exercices sont manquants
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
@@ -68,15 +65,13 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
     }
 
     final sessionId = _uuid.v4();
-
     final session = TrainingSession(
       name: _sessionNameController.text,
-      exercises: _exercises, id: sessionId,
+      exercises: _exercises,
+      id: sessionId,
     );
 
     await _trainingService.addTrainingSession(session);
-
-    // Naviguer vers la page précédente après avoir enregistré la session
     Navigator.pop(context);
   }
 
@@ -95,40 +90,40 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
               ),
             ),
             SizedBox(height: 20),
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: DropdownButton<String>(
-                    value: _selectedDuration,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedDuration = value!;
-                      });
-                    },
-                    items: _durations.map((duration) {
-                      return DropdownMenuItem(
-                        value: duration,
-                        child: Text("$duration sec"),
-                      );
-                    }).toList(),
+                TextField(
+                  controller: _minutesController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Minutes",
+                    suffixText: "min",
                   ),
                 ),
                 SizedBox(width: 10),
-                Expanded(
-                  child: DropdownButton<String>(
-                    value: _selectedType,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedType = value!;
-                      });
-                    },
-                    items: _types.map((type) {
-                      return DropdownMenuItem(
-                        value: type,
-                        child: Text(type),
-                      );
-                    }).toList(),
+                TextField(
+                  controller: _secondsController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: "Secondes",
+                    suffixText: "sec",
                   ),
+                ),
+                SizedBox(width: 10),
+                DropdownButton<String>(
+                  value: _selectedType,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedType = value!;
+                    });
+                  },
+                  items: _types.map((type) {
+                    return DropdownMenuItem(
+                      value: type,
+                      child: Text(type),
+                    );
+                  }).toList(),
                 ),
                 IconButton(
                   icon: Icon(Icons.add),
@@ -142,9 +137,11 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
                 itemCount: _exercises.length,
                 itemBuilder: (context, index) {
                   final exercise = _exercises[index];
+                  int minutes = exercise.duration ~/ 60;
+                  int seconds = exercise.duration % 60;
                   return ListTile(
                     title: Text(
-                        "${exercise.description} - ${exercise.duration} sec"),
+                        "${exercise.description} - $minutes min $seconds sec"),
                   );
                 },
               ),

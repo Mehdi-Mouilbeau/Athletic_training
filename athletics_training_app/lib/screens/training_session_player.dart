@@ -79,11 +79,22 @@ class _TrainingSessionPlayerState extends State<TrainingSessionPlayer> {
     );
   }
 
+  void _cancelSession() {
+    _timer?.cancel();
+    Navigator.pop(context);
+  }
+
   void _playNotificationSound() async {
     if (_audioPlayer.state == PlayerState.playing) {
       await _audioPlayer.stop();
     }
     await _audioPlayer.play(AssetSource('sounds/notification.mp3'));
+  }
+
+  String _formatTime(int seconds) {
+    final minutes = seconds ~/ 60;
+    final remainingSeconds = seconds % 60;
+    return "${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}";
   }
 
   @override
@@ -99,6 +110,12 @@ class _TrainingSessionPlayerState extends State<TrainingSessionPlayer> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Entraînement en cours"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.cancel),
+            onPressed: _cancelSession,
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +126,7 @@ class _TrainingSessionPlayerState extends State<TrainingSessionPlayer> {
           ),
           SizedBox(height: 20),
           Text(
-            "Temps restant : $_remainingSeconds sec",
+            "Temps restant : ${_formatTime(_remainingSeconds)}",
             style: TextStyle(fontSize: 32),
           ),
         ],

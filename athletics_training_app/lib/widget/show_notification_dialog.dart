@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/training_session.dart';
 import '../services/notification_service.dart';
 
+
 Future<void> showNotificationDialog(
     BuildContext context, TrainingSession session) async {
   final TextEditingController timeController = TextEditingController();

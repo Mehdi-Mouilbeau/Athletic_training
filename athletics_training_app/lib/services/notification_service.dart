@@ -30,18 +30,17 @@ class NotificationService {
       id,
       title,
       body,
-      tz.TZDateTime.from(
-          scheduledTime, tz.local),
+      tz.TZDateTime.from(scheduledTime, tz.local),
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'your_channel_id', 
-          'Your Channel Name', 
-          channelDescription:
-              'Your Channel Description',
+          'your_channel_id',
+          'Your Channel Name',
+          channelDescription: 'Your Channel Description',
           importance: Importance.max,
           priority: Priority.high,
         ),
-      ),androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      ),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );

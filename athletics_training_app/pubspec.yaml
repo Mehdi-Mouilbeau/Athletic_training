@@ -25,13 +25,6 @@ dev_dependencies:
   build_runner: ^2.4.13
   flutter_launcher_icons: ^0.14.1
 
-flutter_icons:
-    image_path_android: "assets/icons/playstore.png"
-    image_path_ios: "assets/icons/playstore.png"
-    android: true
-    ios: true
-    remove_alpha_ios: true
-
 flutter_launcher_icons:
   image_path: "assets/icons/playstore.png"
   android: "launcher_icon"

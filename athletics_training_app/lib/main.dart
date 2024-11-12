@@ -1,6 +1,7 @@
+import 'package:athletics_training_app/screens/home_page.dart';
 import 'package:athletics_training_app/services/notification_service.dart';
 import 'package:athletics_training_app/services/training_service.dart';
-import 'package:athletics_training_app/widget/create_training_session.dart';
+import 'package:athletics_training_app/screens/create_training_session.dart';
 import 'package:athletics_training_app/widget/show_notification_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,10 +33,92 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => TrainingApp(),
+        '/': (context) => HomePage(),
         '/training': (context) => const TrainingApp(),
         '/exercises': (context) => const CreateTrainingSession(),
       },
+    );
+  }
+}
+
+// HomePage avec le Drawer pour le menu burger
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Accueil'),
+        centerTitle: true,
+      ),
+      drawer: AppDrawer(), // Drawer centralisé dans AppDrawer
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Bienvenue dans votre application d\'entraînement sportif!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Préparez, programmez et suivez vos séances facilement.',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Drawer centralisé pour éviter la répétition dans chaque page
+class AppDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(color: Colors.blue),
+            child: Center(
+              child: IconButton(
+                icon: Image.asset(
+                  "assets/icons/playstore.png",
+                  width: 100,
+                  height: 100,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text("Accueil"),
+            onTap: () {
+              Navigator.pushNamed(context, '/');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.fitness_center),
+            title: Text("Entrainement"),
+            onTap: () {
+              Navigator.pushNamed(context, '/exercises');
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.directions_run),
+            title: Text("Sessions d'entraînement"),
+            onTap: () {
+              Navigator.pushNamed(context, '/training');
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -49,66 +132,19 @@ class TrainingApp extends StatefulWidget {
 
 class _TrainingAppState extends State<TrainingApp> {
   final TrainingService _trainingService = TrainingService();
-  final NotificationService _notificationService = NotificationService();
 
   @override
   Widget build(BuildContext context) {
     List<TrainingSession> sessions = _trainingService.getAllSessions();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Sessions d'entraînement")),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Center(
-                child: IconButton(
-                  icon: Image.asset(
-                    "assets/icons/playstore.png",
-                    width: 300,
-                    height: 300,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.directions_run),
-              title: Text("Entrainement"),
-              onTap: () {
-                Navigator.pushNamed(context, '/exercises');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.fitness_center),
-              title: Text("Exercices"),
-              onTap: () {
-                Navigator.pushNamed(context, '/training');
-              },
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: Text("Sessions d'entraînement"),
+        centerTitle: true,
       ),
+      drawer: AppDrawer(), // Drawer ici aussi pour le menu burger
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CreateTrainingSession()),
-              ).then((_) {
-                setState(() {});
-              });
-            },
-            child: const Text("Créer une nouvelle session"),
-          ),
           Expanded(
             child: ListView.builder(
               itemCount: sessions.length,
@@ -131,7 +167,7 @@ class _TrainingAppState extends State<TrainingApp> {
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () async {
                           await _trainingService.deleteTrainingSession(session);
-                          setState(() {});
+                          setState(() {}); // Rafraîchit la liste des sessions
                         },
                       ),
                     ],
