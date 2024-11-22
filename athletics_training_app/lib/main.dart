@@ -1,11 +1,13 @@
-import 'package:athletics_training_app/screens/home_page.dart';
+import 'package:athletics_training_app/screens/athletics_performance.dart';
+import 'package:athletics_training_app/screens/performance_graph.dart';
+import 'package:athletics_training_app/screens/performance_list.dart';
 import 'package:athletics_training_app/services/notification_service.dart';
-import 'package:athletics_training_app/services/training_service.dart';
 import 'package:athletics_training_app/screens/create_training_session.dart';
+import 'package:athletics_training_app/models/training_session.dart';
+import 'package:athletics_training_app/services/training_service.dart';
 import 'package:athletics_training_app/widget/show_notification_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'models/training_session.dart';
 import 'screens/training_session_player.dart';
 
 void main() async {
@@ -18,7 +20,7 @@ void main() async {
   // Initialize the notification service
   await NotificationService().initNotifications();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -33,28 +35,33 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => const HomePage(),
         '/training': (context) => const TrainingApp(),
         '/exercises': (context) => const CreateTrainingSession(),
+        '/performance-list': (context) => const PerformanceList(),
+        '/performance-graph': (context) => const PerformanceGraphPage(),
+        '/performance-entry': (context) => const AthleticsPerformance(),
       },
     );
   }
 }
 
-// HomePage avec le Drawer pour le menu burger
+// Accueil de l'application avec le menu Drawer
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Accueil'),
+        title: const Text('Accueil'),
         centerTitle: true,
       ),
-      drawer: AppDrawer(), // Drawer centralisé dans AppDrawer
+      drawer: const AppDrawer(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Text(
               'Bienvenue dans votre application d\'entraînement sportif!',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -73,56 +80,90 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// Drawer centralisé pour éviter la répétition dans chaque page
+// Drawer centralisé pour navigation
 class AppDrawer extends StatelessWidget {
+  const AppDrawer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
-            child: Center(
-              child: IconButton(
-                icon: Image.asset(
-                  "assets/icons/playstore.png",
-                  width: 100,
-                  height: 100,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
+          _buildDrawerHeader(context),
+          _buildDrawerItem(
+            context,
+            icon: Icons.home,
+            title: "Accueil",
+            route: '/',
           ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text("Accueil"),
-            onTap: () {
-              Navigator.pushNamed(context, '/');
-            },
+          _buildDrawerItem(
+            context,
+            icon: Icons.fitness_center,
+            title: "Entraînement",
+            route: '/exercises',
           ),
-          ListTile(
-            leading: Icon(Icons.fitness_center),
-            title: Text("Entrainement"),
-            onTap: () {
-              Navigator.pushNamed(context, '/exercises');
-            },
+          _buildDrawerItem(
+            context,
+            icon: Icons.directions_run,
+            title: "Sessions d'entraînement",
+            route: '/training',
           ),
-          ListTile(
-            leading: Icon(Icons.directions_run),
-            title: Text("Sessions d'entraînement"),
-            onTap: () {
-              Navigator.pushNamed(context, '/training');
-            },
+          _buildDrawerItem(
+            context,
+            icon: Icons.bar_chart,
+            title: "Graphiques des performances",
+            route: '/performance-graph',
+          ),
+          _buildDrawerItem(
+            context,
+            icon: Icons.list_alt,
+            title: "Liste des performances",
+            route: '/performance-list',
+          ),
+          _buildDrawerItem(
+            context,
+            icon: Icons.add,
+            title: "Enregistrer Performance",
+            route: '/performance-entry',
           ),
         ],
       ),
     );
   }
+
+  Widget _buildDrawerHeader(BuildContext context) {
+    return DrawerHeader(
+      decoration: const BoxDecoration(color: Colors.blue),
+      child: Center(
+        child: IconButton(
+          icon: Image.asset(
+            "assets/icons/playstore.png",
+            width: 100,
+            height: 100,
+          ),
+          onPressed: () {
+            Navigator.pop(context); // Ferme le Drawer sans changer la page
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDrawerItem(BuildContext context,
+      {required IconData icon, required String title, required String route}) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: () {
+        Navigator.pop(context); // Ferme le Drawer avant de naviguer
+        Navigator.pushNamed(context, route);
+      },
+    );
+  }
 }
 
+// Affichage des sessions d'entraînement
 class TrainingApp extends StatefulWidget {
   const TrainingApp({super.key});
 
@@ -139,10 +180,10 @@ class _TrainingAppState extends State<TrainingApp> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sessions d'entraînement"),
+        title: const Text("Sessions d'entraînement"),
         centerTitle: true,
       ),
-      drawer: AppDrawer(), // Drawer ici aussi pour le menu burger
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -167,7 +208,7 @@ class _TrainingAppState extends State<TrainingApp> {
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () async {
                           await _trainingService.deleteTrainingSession(session);
-                          setState(() {}); // Rafraîchit la liste des sessions
+                          setState(() {});
                         },
                       ),
                     ],

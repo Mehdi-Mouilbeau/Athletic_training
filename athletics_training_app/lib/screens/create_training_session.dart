@@ -43,7 +43,7 @@ class _CreateTrainingSessionState extends State<CreateTrainingSession> {
     final exercise = Exercise(
       description: _selectedType,
       duration: totalDuration,
-      recovery: 0, // Valeur par défaut
+      recovery: 0,
     );
 
     setState(() {

@@ -1,0 +1,92 @@
+{
+  "Athletisme": {
+    "Courses": {
+      "Courses_de_vitesse": ["100 mètres", "200 mètres", "400 mètres"],
+      "Courses_de_demi_fond": ["800 mètres", "1500 mètres"],
+      "Courses_de_fond": ["3000 mètres", "5000 mètres", "10000 mètres"],
+      "Courses_de_haies": ["100 mètres haies (femmes)", "110 mètres haies (hommes)", "400 mètres haies"],
+      "Relais": ["4 × 100 mètres", "4 × 400 mètres", "Relais mixte (4 × 400 mètres)"],
+      "Courses_de_steeple": ["3000 mètres steeple"]
+    },
+    "Sauts": {
+      "Sauts_horizontaux": ["Saut en longueur", "Triple saut"],
+      "Sauts_verticaux": ["Saut en hauteur", "Saut à la perche"]
+    },
+    "Lancers": ["Lancer du poids", "Lancer du disque", "Lancer du javelot", "Lancer du marteau"],
+    "Marche_athletique": ["10 km marche", "20 km marche", "35 km marche"],
+    "Epreuves_combinees": {
+      "Decathlon": [
+        "100 mètres",
+        "Saut en longueur",
+        "Lancer du poids",
+        "Saut en hauteur",
+        "400 mètres",
+        "110 mètres haies",
+        "Lancer du disque",
+        "Saut à la perche",
+        "Lancer du javelot",
+        "1500 mètres"
+      ],
+      "Heptathlon": [
+        "100 mètres haies",
+        "Saut en hauteur",
+        "Lancer du poids",
+        "200 mètres",
+        "Saut en longueur",
+        "Lancer du javelot",
+        "800 mètres"
+      ],
+      "Pentathlon": [
+        "60 mètres haies",
+        "Saut en hauteur",
+        "Lancer du poids",
+        "Saut en longueur",
+        "800 mètres"
+      ]
+    },
+    "Courses_hors_stade": ["Cross-country", "Semi-marathon", "Marathon", "Ultra-marathon", "Trail"],
+    "Epreuves_mixtes": ["Relais mixte 4 × 400 m", "Relais marche mixte"],
+  "Categories_Age": {
+    "Masters": {
+        "M0": "1990 - 1986",
+        "M1": "1985 - 1981",
+        "M2": "1980 - 1976",
+        "M3": "1975 - 1971",
+        "M4": "1970 - 1966",
+        "M5": "1965 - 1961",
+        "M6": "1960 - 1956",
+        "M7": "1955 - 1951",
+        "M8": "1950 - 1946",
+        "M9": "1945 - 1941",
+        "M10": "1940 et avant"  
+    },
+    "Seniors": {
+      "SE": "1991 à 2002"
+    },
+    "U23_Espoirs": {
+      "ES": "2003 à 2005"
+    },
+    "U20_Juniors": {
+      "JU": "2006 et 2007"
+    },
+    "U18_Cadets": {
+      "CA": "2008 et 2009"
+    },
+    "U16_Minimes": {
+      "MI": "2010 et 2011"
+    },
+    "U14_Benjamins": {
+      "BE": "2012 et 2013"
+    },
+    "U12_Poussins": {
+      "PO": "2014 et 2015"
+    },
+    "Eveil_Athletique": {
+      "EA": "2016 à 2018"
+    },
+    "Baby_Athle": {
+      "BB": "2019 et après"
+    }
+  }
+}
+}
